@@ -6,9 +6,11 @@
         <th>Actions</th>
     </tr>
     @foreach($suggestions as $Suggestion)
-        <tr>{{$Suggestion->name}}</tr>
-        <tr>{{$Suggestion->getVotes()}}</tr>
-        <tr>{{$Suggestion->getSubmitter()}}</tr>
-        <tr><a href="#">View</a></tr>
+        <tr>
+            <td>{{$Suggestion->name}}</td>
+            <td>{{$Suggestion->getVotes()->count('vote')}}</td>
+            <td>{{$Suggestion->getSubmitter->name}}</td>
+            <td><a href="{{route('suggestion.show', $Suggestion->id)}}">View</a></td>
+        </tr>
     @endforeach
 </table>

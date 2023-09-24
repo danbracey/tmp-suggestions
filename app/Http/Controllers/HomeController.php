@@ -27,7 +27,7 @@ class HomeController extends Controller
     {
         if(Auth::check()) {
             return view('index', [
-                'MySuggestions' => Suggestion::where('created_by', Auth::user()->id)->get(),
+                'MySuggestions' => Suggestion::where('user_id', Auth::user()->id)->get(),
                 'Suggestions' => Suggestion::all()
             ]);
         }

@@ -35,13 +35,13 @@ class SuggestionController extends Controller
      */
     public function store(SuggestionRequest $request)
     {
-        $validated = $request->validated();
+        $validated = $request->safe();
 
         $Suggestion = new Suggestion();
         $Suggestion->name = $validated['name'];
         $Suggestion->short_description = $validated['short_description'];
         $Suggestion->long_description = $validated['long_description'];
-        $Suggestion->created_by = Auth::user()->id;
+        $Suggestion->user_id = Auth::user()->id;
         $Suggestion->status = 1;
         $Suggestion->save();
 

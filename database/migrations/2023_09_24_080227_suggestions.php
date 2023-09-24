@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('short_description');
             $table->string('long_description');
-            $table->integer('created_by')->nullable();
-            $table->integer('status')->default(0); //Default to 0, new suggestions
+            $table->foreignIdFor(\App\Models\User::class)->constrained();
+            $table->integer('status'); //Default to 0, new suggestions
             $table->timestamps();
         });
     }
