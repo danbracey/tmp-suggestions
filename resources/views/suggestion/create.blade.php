@@ -16,17 +16,17 @@
         <form action="{{route('suggestion.store')}}" method="post">
             @csrf
             <div class="form-group">
-                <label> Suggestion Name
+                <label style="width:100%"> Suggestion Name
                     <input type="text" name="name" class="form-control">
                 </label>
             </div>
             <div class="form-group">
-                <label> Short Description
+                <label style="width:100%"> Short Description
                     <textarea type="text" name="short_description" class="form-control"></textarea>
                 </label>
             </div>
             <div class="form-group">
-                <label> Long Description
+                <label style="width:100%"> Long Description
                     <textarea type="text" name="long_description" class="form-control"></textarea>
                 </label>
             </div>

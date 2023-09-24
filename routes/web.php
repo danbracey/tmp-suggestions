@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SuggestionController;
+use App\Http\Controllers\VoteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,3 +19,5 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('suggestion', SuggestionController::class);
+Route::get('suggestion/{suggestion}/vote/up', [VoteController::class, 'voteUp'])->name('suggestion.vote.up');
+Route::get('suggestion/{suggestion}/vote/down', [VoteController::class, 'voteDown'])->name('suggestion.vote.down');
