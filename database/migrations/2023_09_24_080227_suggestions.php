@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('long_description');
             $table->integer('created_by')->nullable();
             $table->integer('status')->default(0); //Default to 0, new suggestions
+            $table->timestamps();
         });
     }
 

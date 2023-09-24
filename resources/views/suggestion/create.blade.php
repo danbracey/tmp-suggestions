@@ -2,10 +2,22 @@
 @section('title', 'New Suggestion')
 @section('content')
     <div class="container">
-        <form action="{{route('suggestion.store')}}">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                Unable to create suggestion due to the following validation errors:
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{route('suggestion.store')}}" method="post">
+            @csrf
             <div class="form-group">
                 <label> Suggestion Name
-                    <input type="text" name="title" class="form-control">
+                    <input type="text" name="name" class="form-control">
                 </label>
             </div>
             <div class="form-group">

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SuggestionRequest;
 use App\Models\Suggestion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 
@@ -17,7 +19,7 @@ class SuggestionController extends Controller
      */
     public function index()
     {
-        //Not needed, use main index
+        return redirect('/');
     }
 
     /**
@@ -31,9 +33,19 @@ class SuggestionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SuggestionRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        $Suggestion = new Suggestion();
+        $Suggestion->name = $validated['name'];
+        $Suggestion->short_description = $validated['short_description'];
+        $Suggestion->long_description = $validated['long_description'];
+        $Suggestion->created_by = Auth::user()->id;
+        $Suggestion->status = 1;
+        $Suggestion->save();
+
+        return redirect('/')->with('success', 'Created Successfully');
     }
 
     /**

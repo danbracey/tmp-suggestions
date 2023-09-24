@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('suggestion_id');
             $table->integer('user_id');
             $table->integer('vote');
+            $table->timestamps();
         });
     }
 
