@@ -4,23 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\Suggestion;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+
 
 class SuggestionController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth')->except('show');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        //Not needed, use main index
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('suggestion.create');
     }
 
     /**

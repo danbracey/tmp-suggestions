@@ -1,8 +1,25 @@
-@extends('layout')
+@extends('layouts.app')
 @section('content')
-<section>
-    <h1>Top Suggestions</h1>
-
-    <h2>My Suggestions</h2>
-</section>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Top Suggestions</div>
+                    <div class="card-body">
+                        <x-tables.suggestions :suggestions="$Suggestions ?? []"></x-tables.suggestions>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">My Suggestions</div>
+                    <div class="card-body">
+                        <x-tables.suggestions :suggestions="$MySuggestions ?? []"></x-tables.suggestions>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
