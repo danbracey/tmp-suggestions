@@ -19,7 +19,7 @@ class SuggestionFactory extends Factory
     {
         return [
             'name' => 'Fake Suggestion',
-            'short_description' => fake()->paragraph,
+            'short_description' => fake()->paragraph(2),
             'long_description' => fake()->paragraph,
             'user_id' => User::inRandomOrder()->first()->id,
             'status' => 1
