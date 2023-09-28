@@ -15,9 +15,13 @@ class VoteController extends Controller
         //$this->middleware('can:vote');
     }
 
-    public function voteUp(Suggestion $suggestion): void
+    public function voteUp(Suggestion $suggestion, Request $request): void
     {
-        $this->authorize('vote', [VotePolicy::class, Auth::user(), $suggestion]);
+        $this->authorize('vote', [Auth::user(), $suggestion]);
+        //if($request->user()->cannot('vote', SuggestionVote::class)) {
+        //    abort(403);
+        //}
+
         $this->vote($suggestion, 1);
     }
 

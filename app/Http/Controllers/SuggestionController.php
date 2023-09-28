@@ -53,7 +53,11 @@ class SuggestionController extends Controller
      */
     public function show(Suggestion $suggestion)
     {
-        //
+        $Suggestion = Suggestion::find($suggestion)->firstOrFail();
+
+        return view('suggestion.show', [
+            'Suggestion' => $Suggestion
+        ]);
     }
 
     /**

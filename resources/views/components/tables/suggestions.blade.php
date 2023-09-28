@@ -22,6 +22,10 @@
                         <i>You have already voted on this suggestion</i>
                         @endif
                     @endif
+                    @can('manage suggestions')
+                        <a href="{{route('suggestion.edit', $Suggestion->id)}}" class="btn btn-pill btn-warning">Edit</a>
+                        <a href="{{route('suggestion.destroy', $Suggestion->id)}}" class="btn btn-pill btn-danger">Delete</a>
+                    @endcan
                 @endauth
             </td>
         </tr>
