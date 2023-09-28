@@ -15,20 +15,28 @@ class VoteController extends Controller
         //$this->middleware('can:vote');
     }
 
-    public function voteUp(Suggestion $suggestion, Request $request): void
-    {
-        $this->authorize('vote', [Auth::user(), $suggestion]);
-        //if($request->user()->cannot('vote', SuggestionVote::class)) {
-        //    abort(403);
-        //}
-
+    public function voteUp(Suggestion $suggestion): \Illuminate\Http\RedirectResponse {
+        $this->authorize('vote', $suggestion);
         $this->vote($suggestion, 1);
+        return redirect(route('home'))->with('success', 'You have successfully upvoted ' . $suggestion->name);
     }
 
-    public function voteDown(Suggestion $suggestion): void
-    {
-        $this->authorize('vote', [VotePolicy::class, Auth::user(), $suggestion]);
+    public function voteDown(Suggestion $suggestion): \Illuminate\Http\RedirectResponse {
+        $this->authorize('vote', $suggestion);
         $this->vote($suggestion, -1);
+        return redirect(route('home'))->with('success', 'You have successfully downvoted ' . $suggestion->name);
+    }
+
+    public function remove(Suggestion $suggestion): \Illuminate\Http\RedirectResponse
+    {
+        try {
+            SuggestionVote::where('suggestion_id', $suggestion->id)->where('user_id', Auth::user()->id)
+                ->firstOrFail()->delete();
+            return redirect(route('home'))->with('success', 'Vote removed');
+        } catch(\Exception) {
+            return redirect(route('home'))
+                ->with('danger', 'Unable to remove vote. Have you already removed your vote?');
+        }
     }
 
     private function vote($suggestion, int $vote) {

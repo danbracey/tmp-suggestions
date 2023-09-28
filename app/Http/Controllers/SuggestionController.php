@@ -53,10 +53,8 @@ class SuggestionController extends Controller
      */
     public function show(Suggestion $suggestion)
     {
-        $Suggestion = Suggestion::find($suggestion)->firstOrFail();
-
         return view('suggestion.show', [
-            'Suggestion' => $Suggestion
+            'Suggestion' => $suggestion
         ]);
     }
 
@@ -65,15 +63,24 @@ class SuggestionController extends Controller
      */
     public function edit(Suggestion $suggestion)
     {
-        //
+        return view('suggestion.edit', [
+            'Suggestion' => $suggestion
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Suggestion $suggestion)
+    public function update(SuggestionRequest $request, Suggestion $suggestion)
     {
-        //
+        $validated = $request->safe();
+
+        $suggestion->name = $validated['name'];
+        $suggestion->short_description = $validated['short_description'];
+        $suggestion->long_description = $validated['long_description'];
+        $suggestion->update();
+
+        return redirect(route('suggestion.show', $suggestion));
     }
 
     /**
@@ -81,6 +88,25 @@ class SuggestionController extends Controller
      */
     public function destroy(Suggestion $suggestion)
     {
-        //
+        $suggestion->delete();
+        return redirect(route('home'))->with('success', 'Suggestion Deleted');
+    }
+
+    public function approve(Suggestion $suggestion) {
+        $suggestion->status = 2;
+        $suggestion->save();
+        return redirect(route('suggestion.show', $suggestion))->with('success', 'Suggestion Approved');
+    }
+
+    public function deny(Suggestion $suggestion) {
+        $suggestion->status = 3;
+        $suggestion->save();
+        return redirect(route('suggestion.show', $suggestion))->with('information', 'Suggestion Denied');
+    }
+
+    public function reopen(Suggestion $suggestion) {
+        $suggestion->status = 1;
+        $suggestion->save();
+        return redirect(route('suggestion.show', $suggestion))->with('info', 'Suggestion Re-opened');
     }
 }

@@ -31,6 +31,7 @@
                 <div class="card">
                     <div class="card-header">Manage Suggestion</div>
                     <div class="card-body">
+                        <x-manage-suggestion :suggestion="$Suggestion"/>
                         <a href="{{route('suggestion.edit', $Suggestion->id)}}" class="btn btn-pill btn-warning">Edit</a>
                         <a href="{{route('suggestion.destroy', $Suggestion->id)}}" class="btn btn-pill btn-danger">Delete</a>
                     </div>

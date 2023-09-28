@@ -30,7 +30,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('suggestion.create') }}">+ New Suggestion</a>
+                            </li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -71,6 +75,27 @@
                 </div>
             </div>
         </nav>
+
+        @if(\Illuminate\Support\Facades\Session::has('success'))
+            <div class="alert alert-success" role="alert">
+                {{Session::get('success')}}
+            </div>
+        @endif
+        @if(\Illuminate\Support\Facades\Session::has('danger'))
+            <div class="alert alert-danger" role="alert">
+                {{Session::get('danger')}}
+            </div>
+        @endif
+        @if(\Illuminate\Support\Facades\Session::has('warning'))
+            <div class="alert alert-warning" role="alert">
+                {{Session::get('warning')}}
+            </div>
+        @endif
+        @if(\Illuminate\Support\Facades\Session::has('info'))
+            <div class="alert alert-info" role="alert">
+                {{Session::get('info')}}
+            </div>
+        @endif
 
         <main class="py-4">
             @yield('content')

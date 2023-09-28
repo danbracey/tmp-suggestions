@@ -2,6 +2,7 @@
     <tr>
         <th>Suggestion Name</th>
         <th>Votes</th>
+        <th>Status</th>
         <th>Submitted By</th>
         <th>Actions</th>
     </tr>
@@ -9,23 +10,22 @@
         <tr>
             <td>{{$Suggestion->name}}</td>
             <td>{{$Suggestion->getVotes()->sum('vote')}}</td>
+            @switch($Suggestion->status)
+                @case(1)
+                    <td>Open</td>
+                @break
+                @case(2)
+                    <td><span style="color: green; font-weight: bolder">Approved</span></td>
+                @break
+                @case(3)
+                    <td><span style="color: red; font-weight: bolder">Denied</span></td>
+                @break
+            @endswitch
             <td>{{$Suggestion->getSubmitter->name}}</td>
             <td>
                 <a href="{{route('suggestion.show', $Suggestion->id)}}" class="btn btn-pill btn-info">&#128269;</a>
                 @auth
-                    @if($Suggestion->getSubmitter->id !== Auth::user()->id)
-                        {{-- Check that the suggestion hasn't already been voted on by this user --}}
-                        @if(\App\Models\SuggestionVote::where('suggestion_id', $Suggestion->id)->where('user_id', Auth::user()->id))
-                        <a href="{{route('suggestion.vote.up', $Suggestion->id)}}" class="btn btn-pill btn-success">&uarr;</a>
-                        <a href="{{route('suggestion.vote.down', $Suggestion->id)}}" class="btn btn-pill btn-danger">&darr;</a>
-                        @else
-                        <i>You have already voted on this suggestion</i>
-                        @endif
-                    @endif
-                    @can('manage suggestions')
-                        <a href="{{route('suggestion.edit', $Suggestion->id)}}" class="btn btn-pill btn-warning">Edit</a>
-                        <a href="{{route('suggestion.destroy', $Suggestion->id)}}" class="btn btn-pill btn-danger">Delete</a>
-                    @endcan
+                <x-suggestions.vote :suggestion="$Suggestion"/>
                 @endauth
             </td>
         </tr>

@@ -7,6 +7,7 @@ use App\Models\Suggestion;
 use App\Models\SuggestionVote;
 use App\Policies\VotePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,5 +26,6 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
+        Gate::define('vote','App\Policies\VotePolicy@vote');
     }
 }
