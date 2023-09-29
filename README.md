@@ -40,6 +40,23 @@ You may now access the project by running
   php artisan serve
 ```
 
+## Login Details
+You can login to the project with the following details:
+
+Normal user:
+```
+Email address: user@truckersmp.com
+Password: password
+```
+Admin user:
+```
+Email address: admin@truckersmp.com
+Password: password
+```
+
+Admin users have the ability to manage all suggestions. Normal users can only manage suggestions they have created themselves.
+
+
 ## Authors
 
 - [Dan Bracey](https://www.github.com/danbracey)
