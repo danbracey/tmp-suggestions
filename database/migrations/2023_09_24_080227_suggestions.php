@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('suggestions', static function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('short_description');
-            $table->string('long_description');
+            $table->text('short_description');
+            $table->longText('long_description');
             $table->foreignIdFor(\App\Models\User::class)->constrained();
             $table->integer('status'); //Default to 0, new suggestions
             $table->timestamps();

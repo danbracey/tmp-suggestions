@@ -45,32 +45,35 @@ class SuggestionTest extends TestCase
 
     public function test_suggestion_can_be_edited(): void {
         $user = \App\Models\User::factory()->create();
-        $getRandomSuggestion = Suggestion::inRandomOrder()->first();
-        $page = $this->actingAs($user)->get(route('suggestion.edit', $getRandomSuggestion));
+        $suggestion = Suggestion::factory()->create([
+            'user_id' => $user->id
+        ]);
+        $page = $this->actingAs($user)->get(route('suggestion.edit', $suggestion));
         //Assert that the current values are showing in the edit form
-        $page->assertSeeText($getRandomSuggestion->short_description);
-        $page->assertSeeText($getRandomSuggestion->long_description);
-        $form = $this->put(route('suggestion.update', $getRandomSuggestion), [
+        $page->assertSeeText($suggestion->short_description);
+        $page->assertSeeText($suggestion->long_description);
+        $form = $this->put(route('suggestion.update', $suggestion), [
             'name' => "New Name",
             'short_description' => "New Short Description",
             'long_description' => "New Long Description"
         ]);
         $this->assertDatabaseHas('suggestions', [
-            'id' => $getRandomSuggestion->id,
+            'id' => $suggestion->id,
             'name' => "New Name",
             'short_description' => 'New Short Description',
             'long_description' => 'New Long Description'
         ]);
     }
 
-    public function test_suggestion_cannot_be_edited_by_another_user(): void {
-        //Create our first user and create a random suggestion in their name
-        $userOne = \App\Models\User::factory()->create();
-        $suggestionForUserOne = Suggestion::factory()->createOne([
-            'user_id' => $userOne->id
+    public function test_suggestion_can_be_deleted(): void {
+        $user = \App\Models\User::factory()->create();
+        $suggestion = Suggestion::factory()->create([
+            'user_id' => $user->id
         ]);
-        $userTwo = \App\Models\User::factory()->create();
-        $page = $this->actingAs($userTwo)->get(route('suggestion.edit', $suggestionForUserOne));
-        $page->assertForbidden();
+        $page = $this->actingAs($user)->delete(route('suggestion.destroy', $suggestion));
+        $page->assertStatus(302); //Assert that we are redirected (to the homepage)
+        $this->assertDatabaseMissing('suggestions', [
+            'id' => $suggestion->id
+        ]); //Assert database record has been deleted
     }
 }

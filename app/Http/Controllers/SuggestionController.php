@@ -63,6 +63,8 @@ class SuggestionController extends Controller
      */
     public function edit(Suggestion $suggestion)
     {
+        $this->authorize('update', $suggestion);
+
         return view('suggestion.edit', [
             'Suggestion' => $suggestion
         ]);
@@ -73,6 +75,7 @@ class SuggestionController extends Controller
      */
     public function update(SuggestionRequest $request, Suggestion $suggestion)
     {
+        $this->authorize('update', $suggestion);
         $validated = $request->safe();
 
         $suggestion->name = $validated['name'];
@@ -88,23 +91,27 @@ class SuggestionController extends Controller
      */
     public function destroy(Suggestion $suggestion)
     {
+        $this->authorize('delete', $suggestion);
         $suggestion->delete();
         return redirect(route('home'))->with('success', 'Suggestion Deleted');
     }
 
     public function approve(Suggestion $suggestion) {
+        $this->authorize('manage', $suggestion);
         $suggestion->status = 2;
         $suggestion->save();
         return redirect(route('suggestion.show', $suggestion))->with('success', 'Suggestion Approved');
     }
 
     public function deny(Suggestion $suggestion) {
+        $this->authorize('manage', $suggestion);
         $suggestion->status = 3;
         $suggestion->save();
         return redirect(route('suggestion.show', $suggestion))->with('information', 'Suggestion Denied');
     }
 
     public function reopen(Suggestion $suggestion) {
+        $this->authorize('manage', $suggestion);
         $suggestion->status = 1;
         $suggestion->save();
         return redirect(route('suggestion.show', $suggestion))->with('info', 'Suggestion Re-opened');
