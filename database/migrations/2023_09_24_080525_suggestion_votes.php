@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('suggestion_votes', static function (Blueprint $table) {
             $table->id();
             $table->integer('suggestion_id');
-            $table->integer('user_id');
+            $table->foreignIdFor(\App\Models\User::class)->constrained();
             $table->integer('vote');
             $table->timestamps();
         });
