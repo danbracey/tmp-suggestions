@@ -46,13 +46,11 @@ class SuggestionTest extends TestCase
     public function test_suggestion_can_be_edited(): void {
         $user = \App\Models\User::factory()->create();
         $getRandomSuggestion = Suggestion::inRandomOrder()->first();
-        var_dump($getRandomSuggestion);
         $page = $this->actingAs($user)->get(route('suggestion.edit', $getRandomSuggestion));
         //Assert that the current values are showing in the edit form
-        //$page->assertSeeText($getRandomSuggestion->name);
         $page->assertSeeText($getRandomSuggestion->short_description);
         $page->assertSeeText($getRandomSuggestion->long_description);
-        $form = $this->post(route('suggestion.update', $getRandomSuggestion), [
+        $form = $this->put(route('suggestion.update', $getRandomSuggestion), [
             'name' => "New Name",
             'short_description' => "New Short Description",
             'long_description' => "New Long Description"
@@ -63,5 +61,16 @@ class SuggestionTest extends TestCase
             'short_description' => 'New Short Description',
             'long_description' => 'New Long Description'
         ]);
+    }
+
+    public function test_suggestion_cannot_be_edited_by_another_user(): void {
+        //Create our first user and create a random suggestion in their name
+        $userOne = \App\Models\User::factory()->create();
+        $suggestionForUserOne = Suggestion::factory()->createOne([
+            'user_id' => $userOne->id
+        ]);
+        $userTwo = \App\Models\User::factory()->create();
+        $page = $this->actingAs($userTwo)->get(route('suggestion.edit', $suggestionForUserOne));
+        $page->assertForbidden();
     }
 }
